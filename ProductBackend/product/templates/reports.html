@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Kasat Mall - Reports</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr (for date/time selection) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .sidebar-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .report-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+        
+        .drag-drop-area {
+            border: 2px dashed #e5e7eb;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            transition: background-color 0.3s ease;
+        }
+        
+        .drag-drop-area:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .chart-container {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        
+        .kpi-card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar (Same as Dashboard) -->
+        <div class="sidebar w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10 text-white">
+            <div class="flex items-center space-x-2 px-4">
+                <i class="fas fa-tshirt text-2xl text-indigo-200"></i>
+                <span class="text-2xl font-extrabold">RG Kasat Mall</span>
+            </div>
+            <nav>
+                <div class="space-y-1">
+                    <a href="index.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="products.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tshirt mr-3"></i>Products
+                    </a>
+                    <a href="pricing-discounts.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tag mr-3"></i>Pricing & Discounts
+                    </a>
+                    <a href="orders.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-shopping-cart mr-3"></i>Orders
+                    </a>
+                    <a href="customers.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-users mr-3"></i>Customers
+                    </a>
+                    <a href="marketing.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-bullhorn mr-3"></i>Marketing
+                    </a>
+                    <a href="omnichannel.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-link mr-3"></i>Omnichannel
+                    </a>
+                    <a href="events.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-calendar mr-3"></i>Events
+                    </a>
+                    <a href="reports.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
+                        <i class="fas fa-chart-bar mr-3"></i>Reports
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation (Same as Dashboard) -->
+            <header class="bg-white shadow-sm z-10 overflow-x-auto">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center">
+                        <button class="md:hidden text-gray-500 focus:outline-none" onclick="toggleSidebar()">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div class="relative mx-4">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="flex items-center focus:outline-none" id="user-menu-button">
+                                <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
+                                <span class="ml-2 text-gray-700">Admin</span>
+                                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+                            </button>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20" id="user-menu">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Reports Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center sm:text-left">
+                        Advanced Reporting
+                    </h1>
+                    <div class="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center" onclick="showCustomReportModal()">
+                            <i class="fas fa-plus mr-2"></i>Create Report
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Reports Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px overflow-x-auto">
+                            <button id="custom-tab" class="tab-button py-4 px-6 text-center text-sm font-medium tab-active" onclick="openTab('custom')">
+                                Custom Report Builder
+                            </button>
+                            <button id="export-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('export')">
+                                Exportable Reports
+                            </button>
+                            <button id="ai-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('ai')">
+                                AI Insights
+                            </button>
+                            <button id="kpi-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('kpi')">
+                                KPI Monitoring
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Custom Report Builder Tab Content -->
+                <div id="custom-content" class="space-y-6">
+                    <!-- Custom Report Builder -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Custom Report Builder</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showCustomReportModal()">
+                                <i class="fas fa-plus mr-1"></i>Build New Report
+                            </button>
+                        </div>
+                        <div class="drag-drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <p class="text-gray-500">Drag & drop fields here to build your report (e.g., Sales, Date, Product, Revenue, etc.)</p>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <span draggable="true" ondragstart="drag(event)" id="field-sales" class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-md cursor-move">Sales</span>
+                            <span draggable="true" ondragstart="drag(event)" id="field-date" class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-md cursor-move">Date</span>
+                            <span draggable="true" ondragstart="drag(event)" id="field-product" class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-md cursor-move">Product</span>
+                        </div>
+                        <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200" onclick="generateCustomReport()">
+                            Generate Report
+                        </button>
+                    </div>
+                    
+                    <!-- Saved Custom Reports -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fields</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Monthly Sales Report</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 1, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sales, Date, Category</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="viewReport('monthly-sales')">View</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Customer Behavior Analysis</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 15, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Purchases, Demographics, Location</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="viewReport('customer-behavior')">View</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Inventory Turnover Report</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 20, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inventory Levels, Turnover Rate</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="viewReport('inventory-turnover')">View</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exportable Reports Tab Content (Hidden by default) -->
+                <div id="export-content" class="hidden space-y-6">
+                    <!-- Exportable Reports List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Generated</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Format</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sales Summary</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Excel, PDF, CSV</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('sales-summary', 'excel')">Excel</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('sales-summary', 'pdf')">PDF</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="exportReport('sales-summary', 'csv')">CSV</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Inventory Report</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 27, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Excel, PDF, CSV</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('inventory', 'excel')">Excel</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('inventory', 'pdf')">PDF</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="exportReport('inventory', 'csv')">CSV</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Customer Acquisition Report</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 25, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Excel, PDF, CSV</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('customer-acquisition', 'excel')">Excel</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="exportReport('customer-acquisition', 'pdf')">PDF</a>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="exportReport('customer-acquisition', 'csv')">CSV</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Insights Tab Content (Hidden by default) -->
+                <div id="ai-content" class="hidden space-y-6">
+                    <!-- AI Insights -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">AI Insights</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="generateAIInsight()">
+                                <i class="fas fa-robot mr-1"></i>Ask AI
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded-md">
+                                <p class="font-medium">Why did sales drop last month?</p>
+                                <p class="text-sm text-gray-600 mt-1">AI Analysis: Sales dropped by 15% due to seasonal trends and increased competition. Recommendation: Launch targeted promotions.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-md">
+                                <p class="font-medium">Top performing products</p>
+                                <p class="text-sm text-gray-600 mt-1">AI Analysis: Men's Jeans and Summer Dresses account for 40% of revenue. Suggestion: Increase stock and run upsell campaigns.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-md">
+                                <p class="font-medium">Predicted revenue for next quarter</p>
+                                <p class="text-sm text-gray-600 mt-1">AI Analysis: Expected 20% growth based on current trends. Focus on high-demand categories.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- AI Insight Graph -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300 chart-container">
+                        <h3 class="text-lg font-semibold mb-4">Sales Trend Analysis (AI Generated)</h3>
+                        <canvas id="aiSalesChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- KPI Monitoring Tab Content (Hidden by default) -->
+                <div id="kpi-content" class="hidden space-y-6">
+                    <!-- KPI Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="kpi-card bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Sales Growth</h3>
+                            <p class="text-3xl font-bold mt-2">+12%</p>
+                            <p class="text-sm text-gray-500 mt-1">MoM</p>
+                        </div>
+                        <div class="kpi-card bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Customer Retention</h3>
+                            <p class="text-3xl font-bold mt-2">75%</p>
+                            <p class="text-sm text-gray-500 mt-1">Repeat Rate</p>
+                        </div>
+                        <div class="kpi-card bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Inventory Turnover</h3>
+                            <p class="text-3xl font-bold mt-2">4.2</p>
+                            <p class="text-sm text-gray-500 mt-1">Ratio</p>
+                        </div>
+                        <div class="kpi-card bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Conversion Rate</h3>
+                            <p class="text-3xl font-bold mt-2">3.5%</p>
+                            <p class="text-sm text-gray-500 mt-1">Website</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Alerts List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">KPI</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Threshold</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Value</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sales Drop Alert</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-10%</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-15%</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="report-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Alert</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="viewKPI('sales-drop')">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Low Inventory Alert</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><10 units</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5 units</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="report-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Warning</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="viewKPI('low-inventory')">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">High Bounce Rate Alert</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">>50%</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">55%</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="report-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Alert</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900" onclick="viewKPI('bounce-rate')">View</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- KPI Graph -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300 chart-container">
+                        <h3 class="text-lg font-semibold mb-4">KPI Performance Trend</h3>
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Custom Report Modal -->
+    <div id="custom-report-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Build Custom Report</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Report Name</label>
+                                    <input type="text" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g. Weekly Sales">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Fields (Drag & Drop)</label>
+                                    <div class="drag-drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                        <p class="text-gray-500">Drag fields here (e.g., Date, Sales, Product)</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                                    <input type="text" class="datepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select range">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="saveCustomReport()">
+                        Generate & Save
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideCustomReportModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Notification -->
+    <div id="success-notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="success-message">Action completed successfully!</span>
+        </div>
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- JavaScript -->
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Tab functionality
+        function openTab(tabName) {
+            document.querySelectorAll('[id$="-content"]').forEach(content => content.classList.add('hidden'));
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('tab-active', 'text-indigo-600');
+                button.classList.add('text-gray-500');
+            });
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            document.getElementById(`${tabName}-tab`).classList.remove('text-gray-500');
+            document.getElementById(`${tabName}-tab`).classList.add('tab-active', 'text-indigo-600');
+        }
+
+        // Modal control functions
+        function showCustomReportModal() {
+            document.getElementById('custom-report-modal').classList.remove('hidden');
+        }
+
+        function hideCustomReportModal() {
+            document.getElementById('custom-report-modal').classList.add('hidden');
+        }
+
+        // Drag and Drop functionality
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data).cloneNode(true));
+        }
+
+        // Placeholder functions
+        function viewReport(reportId) {
+            alert(`Viewing report ${reportId}...`);
+        }
+
+        function exportReport(reportId, format) {
+            alert(`Exporting ${reportId} as ${format.toUpperCase()}...`);
+            showNotification(`Report exported as ${format.toUpperCase()}!`);
+        }
+
+        function generateAIInsight() {
+            alert('Generating AI insight... (e.g., Why did sales drop?)');
+            showNotification('AI insight generated!');
+        }
+
+        function viewKPI(kpiId) {
+            alert(`Viewing KPI details for ${kpiId}...`);
+        }
+
+        function saveCustomReport() {
+            hideCustomReportModal();
+            showNotification('Custom report saved!');
+        }
+
+        function generateCustomReport() {
+            alert('Generating custom report based on selected fields...');
+            showNotification('Report generated!');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('success-notification');
+            document.getElementById('success-message').textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 3000);
+        }
+
+        // Initialize date pickers and charts
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr(".datepicker", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                minDate: "2025-01-01"
+            });
+            
+            openTab('custom');
+            
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                document.getElementById('user-menu').classList.toggle('hidden');
+            });
+
+            // Sample Chart for AI Insights
+            const aiCtx = document.getElementById('aiSalesChart').getContext('2d');
+            const aiSalesChart = new Chart(aiCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [15000, 18000, 12000, 21000, 19000, 23000, 25000],
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutCubic'
+                    }
+                }
+            });
+
+            // Sample Chart for KPI
+            const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+            const kpiChart = new Chart(kpiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sales Growth', 'Retention', 'Turnover', 'Conversion'],
+                    datasets: [{
+                        label: 'KPI Values',
+                        data: [12, 75, 4.2, 3.5],
+                        backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 159, 64, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 206, 86, 0.6)']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutBounce'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Kasat Mall - Orders</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr (for date/time selection) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .sidebar-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .tracking-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #e5e7eb;
+            transform: translateX(-50%);
+        }
+        
+        .tracking-step {
+            position: relative;
+        }
+        
+        .tracking-step.active .tracking-icon {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .tracking-step.active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #4f46e5;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar (Same as Dashboard) -->
+        <div class="sidebar w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10 text-white">
+            <div class="flex items-center space-x-2 px-4">
+                <i class="fas fa-tshirt text-2xl text-indigo-200"></i>
+                <span class="text-2xl font-extrabold">RG Kasat Mall</span>
+            </div>
+            <nav>
+                <div class="space-y-1">
+                    <a href="index.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="products.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tshirt mr-3"></i>Products
+                    </a>
+                    <a href="pricing-discounts.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tag mr-3"></i>Pricing & Discounts
+                    </a>
+                    <a href="orders.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
+                        <i class="fas fa-shopping-cart mr-3"></i>Orders
+                    </a>
+                    <a href="customers.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-users mr-3"></i>Customers
+                    </a>
+                    <a href="marketing.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-bullhorn mr-3"></i>Marketing
+                    </a>
+                    <a href="omnichannel.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-link mr-3"></i>Omnichannel
+                    </a>
+                    <a href="events.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-calendar mr-3"></i>Events
+                    </a>
+                    <a href="reports.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-chart-bar mr-3"></i>Reports
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation (Same as Dashboard) -->
+            <header class="bg-white shadow-sm z-10 overflow-x-auto">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center">
+                        <button class="md:hidden text-gray-500 focus:outline-none" onclick="toggleSidebar()">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div class="relative mx-4">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="flex items-center focus:outline-none" id="user-menu-button">
+                                <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
+                                <span class="ml-2 text-gray-700">Admin</span>
+                                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+                            </button>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20" id="user-menu">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Orders Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center sm:text-left">
+                        Order & Dispatch Management
+                    </h1>
+                    <div class="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center" onclick="showCreateOrderModal()">
+                            <i class="fas fa-plus mr-2"></i>Create Manual Order
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Orders Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px">
+                            <button id="orders-tab" class="tab-button py-4 px-6 text-center text-sm font-medium tab-active" onclick="openTab('orders')">
+                                Orders
+                            </button>
+                            <button id="returns-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('returns')">
+                                Returns & Exchanges
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Orders Tab Content -->
+                <div id="orders-content" class="space-y-6">
+                    <!-- Order Filters -->
+                    <div class="bg-white rounded-lg shadow p-4 card-hover transition duration-300">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                            <div class="flex items-center space-x-2">
+                                <label class="text-sm font-medium text-gray-700">Filter by Status:</label>
+                                <select id="order-status-filter" class="px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value="all">All</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-sm font-medium text-gray-700">Date Range:</label>
+                                <input type="text" class="datepicker block px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select dates">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-00123</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John Doe</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$149.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Processing</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="showOrderDetailsModal('ORD-00123')">View</a>
+                                            <a href="#" class="text-green-600 hover:text-green-900 mr-3" onclick="generateInvoice('ORD-00123')">Invoice</a>
+                                            <a href="#" class="text-blue-600 hover:text-blue-900" onclick="showTrackingModal('ORD-00123')">Track</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-00124</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jane Smith</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 27, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$89.50</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Shipped</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="showOrderDetailsModal('ORD-00124')">View</a>
+                                            <a href="#" class="text-green-600 hover:text-green-900 mr-3" onclick="generateInvoice('ORD-00124')">Invoice</a>
+                                            <a href="#" class="text-blue-600 hover:text-blue-900" onclick="showTrackingModal('ORD-00124')">Track</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-00125</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Alice Johnson</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 26, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$200.00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Delivered</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="showOrderDetailsModal('ORD-00125')">View</a>
+                                            <a href="#" class="text-green-600 hover:text-green-900 mr-3" onclick="generateInvoice('ORD-00125')">Invoice</a>
+                                            <a href="#" class="text-blue-600 hover:text-blue-900" onclick="showTrackingModal('ORD-00125')">Track</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Returns Tab Content (Hidden by default) -->
+                <div id="returns-content" class="hidden space-y-6">
+                    <!-- Returns List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Return ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RET-0001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">#ORD-00123</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John Doe</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Wrong size</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="showReturnDetailsModal('RET-0001')">View</a>
+                                            <a href="#" class="text-green-600 hover:text-green-900" onclick="approveReturn('RET-0001')">Approve</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RET-0002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">#ORD-00124</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jane Smith</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Defective item</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="showReturnDetailsModal('RET-0002')">View</a>
+                                            <a href="#" class="text-blue-600 hover:text-blue-900" onclick="showTrackingModal('RET-0002', true)">Track Return</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Order Details Modal -->
+    <div id="order-details-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Order Details - <span id="order-id-display"></span></h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Customer Details -->
+                                <div class="bg-gray-50 p-4 rounded-md">
+                                    <h4 class="text-md font-semibold mb-2">Customer Information</h4>
+                                    <p><strong>Name:</strong> John Doe</p>
+                                    <p><strong>Email:</strong> john@example.com</p>
+                                    <p><strong>Phone:</strong> +91 1234567890</p>
+                                    <p><strong>Shipping Address:</strong> 123 Main St, City, State, ZIP</p>
+                                </div>
+                                <!-- Order Items -->
+                                <div class="bg-gray-50 p-4 rounded-md">
+                                    <h4 class="text-md font-semibold mb-2">Order Items</h4>
+                                    <ul class="space-y-2">
+                                        <li class="flex justify-between"><span>Men's Shirt</span><span>$49.99 x 2</span></li>
+                                        <li class="flex justify-between"><span>Jeans</span><span>$99.99 x 1</span></li>
+                                    </ul>
+                                    <p class="mt-2 font-semibold">Total: $149.97</p>
+                                </div>
+                                <!-- Courier Integration -->
+                                <div class="md:col-span-2 bg-gray-50 p-4 rounded-md">
+                                    <h4 class="text-md font-semibold mb-2">Courier & Tracking</h4>
+                                    <p><strong>Courier:</strong> Delhivery (Integrated via API)</p>
+                                    <p><strong>Tracking Number:</strong> DEL123456789</p>
+                                    <p><strong>Status:</strong> In Transit</p>
+                                    <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" onclick="updateTracking()">Update from API</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideOrderDetailsModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tracking Modal -->
+    <div id="tracking-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Real-time Tracking - <span id="tracking-id-display"></span></h3>
+                            <div class="relative tracking-timeline py-4">
+                                <div class="tracking-step active mb-6 text-center">
+                                    <div class="tracking-icon mx-auto h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <p class="mt-2 font-medium">Pending</p>
+                                    <p class="text-sm text-gray-500">Jul 28, 2025 10:00 AM</p>
+                                </div>
+                                <div class="tracking-step active mb-6 text-center">
+                                    <div class="tracking-icon mx-auto h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <p class="mt-2 font-medium">Processing</p>
+                                    <p class="text-sm text-gray-500">Jul 28, 2025 2:00 PM</p>
+                                </div>
+                                <div class="tracking-step active mb-6 text-center">
+                                    <div class="tracking-icon mx-auto h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <p class="mt-2 font-medium">Shipped</p>
+                                    <p class="text-sm text-gray-500">Jul 29, 2025 9:00 AM</p>
+                                </div>
+                                <div class="tracking-step text-center">
+                                    <div class="tracking-icon mx-auto h-8 w-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <p class="mt-2 font-medium">Delivered</p>
+                                    <p class="text-sm text-gray-500">Expected: Jul 31, 2025</p>
+                                </div>
+                            </div>
+                            <p class="text-center text-sm text-gray-500">Integrated with Delhivery API - Last updated: Jul 28, 2025 9:00 PM IST</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideTrackingModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Return Details Modal -->
+    <div id="return-details-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Return Details - <span id="return-id-display"></span></h3>
+                            <div class="space-y-4">
+                                <p><strong>Reason:</strong> Wrong size</p>
+                                <p><strong>Items:</strong> Men's Shirt (Qty: 1)</p>
+                                <p><strong>Requested:</strong> Exchange for larger size</p>
+                                <p><strong>Status:</strong> Pending Approval</p>
+                                <div class="flex space-x-3">
+                                    <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" onclick="approveReturn()">Approve</button>
+                                    <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700" onclick="rejectReturn()">Reject</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideReturnDetailsModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Notification -->
+    <div id="success-notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="success-message">Action completed successfully!</span>
+        </div>
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- JavaScript -->
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Tab functionality
+        function openTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('[id$="-content"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('tab-active', 'text-indigo-600');
+                button.classList.add('text-gray-500');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            
+            // Add active class to the selected tab button
+            document.getElementById(`${tabName}-tab`).classList.remove('text-gray-500');
+            document.getElementById(`${tabName}-tab`).classList.add('tab-active', 'text-indigo-600');
+        }
+
+        // Modal control functions
+        function showOrderDetailsModal(orderId) {
+            document.getElementById('order-id-display').textContent = orderId;
+            document.getElementById('order-details-modal').classList.remove('hidden');
+        }
+
+        function hideOrderDetailsModal() {
+            document.getElementById('order-details-modal').classList.add('hidden');
+        }
+
+        function showTrackingModal(id, isReturn = false) {
+            document.getElementById('tracking-id-display').textContent = isReturn ? `Return ${id}` : `Order ${id}`;
+            document.getElementById('tracking-modal').classList.remove('hidden');
+        }
+
+        function hideTrackingModal() {
+            document.getElementById('tracking-modal').classList.add('hidden');
+        }
+
+        function showReturnDetailsModal(returnId) {
+            document.getElementById('return-id-display').textContent = returnId;
+            document.getElementById('return-details-modal').classList.remove('hidden');
+        }
+
+        function hideReturnDetailsModal() {
+            document.getElementById('return-details-modal').classList.add('hidden');
+        }
+
+        // Placeholder functions
+        function showCreateOrderModal() {
+            alert('TODO: Implement Create Manual Order Modal');
+        }
+
+        function generateInvoice(orderId) {
+            // Simulate PDF generation and download
+            alert(`Generating invoice for ${orderId}... (PDF would be downloaded here)`);
+            showNotification('Invoice generated and downloaded!');
+        }
+
+        function approveReturn(returnId) {
+            alert(`Approving return ${returnId || ''}...`);
+            showNotification('Return approved successfully!');
+            hideReturnDetailsModal();
+        }
+
+        function rejectReturn() {
+            alert('Rejecting return...');
+            showNotification('Return rejected!');
+            hideReturnDetailsModal();
+        }
+
+        function updateTracking() {
+            alert('Updating tracking from Courier API (e.g., Delhivery/FedEx)...');
+            showNotification('Tracking updated!');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('success-notification');
+            document.getElementById('success-message').textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Initialize date pickers
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr(".datepicker", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                mode: "range"
+            });
+            
+            // Initialize with Orders tab open
+            openTab('orders');
+            
+            // User menu toggle
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                document.getElementById('user-menu').classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

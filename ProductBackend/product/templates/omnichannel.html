@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Kasat Mall - Omnichannel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr (for date/time selection) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .sidebar-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sync-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar (Same as Dashboard) -->
+        <div class="sidebar w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10 text-white">
+            <div class="flex items-center space-x-2 px-4">
+                <i class="fas fa-tshirt text-2xl text-indigo-200"></i>
+                <span class="text-2xl font-extrabold">RG Kasat Mall</span>
+            </div>
+            <nav>
+                <div class="space-y-1">
+                    <a href="index.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="products.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tshirt mr-3"></i>Products
+                    </a>
+                    <a href="pricing-discounts.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tag mr-3"></i>Pricing & Discounts
+                    </a>
+                    <a href="orders.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-shopping-cart mr-3"></i>Orders
+                    </a>
+                    <a href="customers.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-users mr-3"></i>Customers
+                    </a>
+                    <a href="marketing.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-bullhorn mr-3"></i>Marketing
+                    </a>
+                    <a href="omnichannel.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
+                        <i class="fas fa-link mr-3"></i>Omnichannel
+                    </a>
+                    <a href="events.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-calendar mr-3"></i>Events
+                    </a>
+                    <a href="reports.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-chart-bar mr-3"></i>Reports
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation (Same as Dashboard) -->
+            <header class="bg-white shadow-sm z-10 overflow-x-auto">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center">
+                        <button class="md:hidden text-gray-500 focus:outline-none" onclick="toggleSidebar()">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div class="relative mx-4">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="flex items-center focus:outline-none" id="user-menu-button">
+                                <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
+                                <span class="ml-2 text-gray-700">Admin</span>
+                                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+                            </button>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20" id="user-menu">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Omnichannel Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center sm:text-left">
+                        Omnichannel Integration
+                    </h1>
+                    <div class="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center" onclick="showAddIntegrationModal()">
+                            <i class="fas fa-plus mr-2"></i>Add Integration
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Omnichannel Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px overflow-x-auto">
+                            <button id="pos-tab" class="tab-button py-4 px-6 text-center text-sm font-medium tab-active" onclick="openTab('pos')">
+                                POS Integration
+                            </button>
+                            <button id="marketplace-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('marketplace')">
+                                Marketplace Sync
+                            </button>
+                            <button id="whatsapp-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('whatsapp')">
+                                WhatsApp Integration
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- POS Integration Tab Content -->
+                <div id="pos-content" class="space-y-6">
+                    <!-- POS Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold">Synced Stores</h3>
+                                <span class="sync-badge bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">Active</span>
+                            </div>
+                            <p class="text-3xl font-bold mt-2">15</p>
+                            <p class="text-sm text-gray-500 mt-1">Offline + online sync[1][2][3]</p>
+                            <button class="mt-4 text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showPOSDetails('synced-stores')">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold">Inventory Updates</h3>
+                                <span class="sync-badge bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Real-time</span>
+                            </div>
+                            <p class="text-3xl font-bold mt-2">98%</p>
+                            <p class="text-sm text-gray-500 mt-1">Accuracy across channels[1][2][5]</p>
+                            <button class="mt-4 text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showPOSDetails('inventory-updates')">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold">Order Fulfillment</h3>
+                                <span class="sync-badge bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm">Omnichannel</span>
+                            </div>
+                            <p class="text-3xl font-bold mt-2">BOPIS</p>
+                            <p class="text-sm text-gray-500 mt-1">Buy online, pick up in-store[3][5]</p>
+                            <button class="mt-4 text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showPOSDetails('order-fulfillment')">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- POS Integrations List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store Type</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sync Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Sync</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Offline Store #1</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Synced</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:45 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="syncPOS('offline-1')">Sync Now</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Online Store</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Synced</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:30 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="syncPOS('online')">Sync Now</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketplace Sync Tab Content (Hidden by default) -->
+                <div id="marketplace-content" class="hidden space-y-6">
+                    <!-- Marketplace Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Connected Marketplaces</h3>
+                            <p class="text-3xl font-bold mt-2">2</p>
+                            <p class="text-sm text-gray-500 mt-1">Amazon, Myntra[6][9][15]</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Synced Orders</h3>
+                            <p class="text-3xl font-bold mt-2">1,234</p>
+                            <p class="text-sm text-gray-500 mt-1">Real-time updates[6][12][15]</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Inventory Accuracy</h3>
+                            <p class="text-3xl font-bold mt-2">99%</p>
+                            <p class="text-sm text-gray-500 mt-1">Across platforms[6][9][18]</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Marketplace Integrations List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marketplace</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sync Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Sync</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Amazon</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Synced</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:50 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="syncMarketplace('amazon')">Sync Now</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Myntra</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Synced</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:40 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="syncMarketplace('myntra')">Sync Now</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Integration Tab Content (Hidden by default) -->
+                <div id="whatsapp-content" class="hidden space-y-6">
+                    <!-- WhatsApp Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Active Sessions</h3>
+                            <p class="text-3xl font-bold mt-2">2,789</p>
+                            <p class="text-sm text-gray-500 mt-1">Order updates sent[7][10][13]</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Open Rate</h3>
+                            <p class="text-3xl font-bold mt-2">95%</p>
+                            <p class="text-sm text-gray-500 mt-1">For notifications[7][10][16]</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                            <h3 class="text-lg font-semibold">Customer Satisfaction</h3>
+                            <p class="text-3xl font-bold mt-2">4.8/5</p>
+                            <p class="text-sm text-gray-500 mt-1">From real-time tracking[10][13][19]</p>
+                        </div>
+                    </div>
+                    
+                    <!-- WhatsApp Updates List -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden card-hover transition duration-300">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Update Type</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Sent</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Order Confirmation</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:55 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="sendUpdate('confirmation')">Send Test</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Delivery Tracking</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="sync-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jul 28, 2025 09:35 PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="sendUpdate('tracking')">Send Test</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Add Integration Modal -->
+    <div id="add-integration-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add New Integration</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Integration Type</label>
+                                    <select class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option>POS System</option>
+                                        <option>Marketplace (e.g., Amazon, Myntra)</option>
+                                        <option>WhatsApp Business</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+                                    <input type="text" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter API key">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Sync Frequency</label>
+                                    <select class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option>Real-time</option>
+                                        <option>Hourly</option>
+                                        <option>Daily</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="saveIntegration()">
+                        Add Integration
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideAddIntegrationModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Notification -->
+    <div id="success-notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="success-message">Action completed successfully!</span>
+        </div>
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- JavaScript -->
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Tab functionality
+        function openTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('[id$="-content"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('tab-active', 'text-indigo-600');
+                button.classList.add('text-gray-500');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            
+            // Add active class to the selected tab button
+            document.getElementById(`${tabName}-tab`).classList.remove('text-gray-500');
+            document.getElementById(`${tabName}-tab`).classList.add('tab-active', 'text-indigo-600');
+        }
+
+        // Modal control functions
+        function showAddIntegrationModal() {
+            document.getElementById('add-integration-modal').classList.remove('hidden');
+        }
+
+        function hideAddIntegrationModal() {
+            document.getElementById('add-integration-modal').classList.add('hidden');
+        }
+
+        // Placeholder functions
+        function showPOSDetails(detail) {
+            alert(`Showing details for ${detail}...`);
+        }
+
+        function syncPOS(store) {
+            alert(`Syncing POS for ${store}...`);
+            showNotification('POS synced successfully!');
+        }
+
+        function syncMarketplace(marketplace) {
+            alert(`Syncing marketplace ${marketplace}...`);
+            showNotification('Marketplace synced successfully!');
+        }
+
+        function sendUpdate(type) {
+            alert(`Sending ${type} update via WhatsApp...`);
+            showNotification('Update sent successfully!');
+        }
+
+        function saveIntegration() {
+            hideAddIntegrationModal();
+            showNotification('Integration added successfully!');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('success-notification');
+            document.getElementById('success-message').textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize with POS tab open
+            openTab('pos');
+            
+            // User menu toggle
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                document.getElementById('user-menu').classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

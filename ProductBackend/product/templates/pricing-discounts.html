@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Kasat Mall - Pricing & Discounts</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr (for date/time selection) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .sidebar-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .discount-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .flash-sale-card {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar (Same as Dashboard) -->
+        <div class="sidebar w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10 text-white">
+            <div class="flex items-center space-x-2 px-4">
+                <i class="fas fa-tshirt text-2xl text-indigo-200"></i>
+                <span class="text-2xl font-extrabold">RG Kasat Mall</span>
+            </div>
+            <nav>
+                <div class="space-y-1">
+                    <a href="index.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="products.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-tshirt mr-3"></i>Products
+                    </a>
+                    <a href="pricing-discounts.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
+                        <i class="fas fa-tag mr-3"></i>Pricing & Discounts
+                    </a>
+                    <a href="orders.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-shopping-cart mr-3"></i>Orders
+                    </a>
+                    <a href="customers.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-users mr-3"></i>Customers
+                    </a>
+                    <a href="marketing.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-bullhorn mr-3"></i>Marketing
+                    </a>
+                    <a href="omnichannel.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-link mr-3"></i>Omnichannel
+                    </a>
+                    <a href="events.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-calendar mr-3"></i>Events
+                    </a>
+                    <a href="reports.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-chart-bar mr-3"></i>Reports
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation (Same as Dashboard) -->
+            <header class="bg-white shadow-sm z-10 overflow-x-auto">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center">
+                        <button class="md:hidden text-gray-500 focus:outline-none" onclick="toggleSidebar()">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div class="relative mx-4">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="flex items-center focus:outline-none" id="user-menu-button">
+                                <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
+                                <span class="ml-2 text-gray-700">Admin</span>
+                                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+                            </button>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20" id="user-menu">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Pricing & Discounts Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center sm:text-left">
+                       Pricing & Discounts
+                    </h1>
+                    <div class="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center" onclick="showAddDiscountModal()">
+                            <i class="fas fa-plus mr-2"></i>Create Discount
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Pricing Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px overflow-x-auto">
+                            <button id="dynamic-pricing-tab" class="tab-button py-4 px-6 text-center text-sm font-medium tab-active" onclick="openTab('dynamic-pricing')">
+                                Dynamic Pricing
+                            </button>
+                            <button id="discounts-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('discounts')">
+                                Discount Rules
+                            </button>
+                            <button id="flash-sales-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('flash-sales')">
+                                Flash Sales
+                            </button>
+                            <button id="coupons-tab" class="tab-button py-4 px-6 text-center text-sm font-medium text-gray-500 hover:text-gray-700" onclick="openTab('coupons')">
+                                Coupons
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Pricing Tab Content -->
+                <div id="dynamic-pricing-content" class="space-y-6">
+                    <!-- AI Pricing Suggestions -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex items-start">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-2">AI Pricing Suggestions</h2>
+                                <p class="text-gray-600 mb-4">Our AI has analyzed market trends and customer behavior to recommend optimal pricing adjustments.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4">
+                                        <p class="text-sm text-gray-500">Seasonal Adjustment</p>
+                                        <p class="text-xl font-bold">Summer Collection +12%</p>
+                                        <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i>Recommended increase</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4">
+                                        <p class="text-sm text-gray-500">Competitor Match</p>
+                                        <p class="text-xl font-bold">Men's Jeans -5%</p>
+                                        <p class="text-sm text-red-500 mt-1"><i class="fas fa-arrow-down mr-1"></i>Price match suggested</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4">
+                                        <p class="text-sm text-gray-500">Demand Peak</p>
+                                        <p class="text-xl font-bold">Weekends +8%</p>
+                                        <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i>Higher conversion expected</p>
+                                    </div>
+                                </div>
+                                <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200">
+                                    Apply Selected Adjustments
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pricing Rules -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Active Pricing Rules</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showAddPricingRuleModal()">
+                                <i class="fas fa-plus mr-1"></i>Add Rule
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rule Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Condition</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adjustment</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Weekend Markup</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Friday 5PM - Sunday 11PM</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+8% on all products</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Disable</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Clearance Discount</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Products in "Clearance" category</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-25% fixed</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Disable</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Competitor Match</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">When competitor price is lower</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Match + 5% discount</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Paused</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-gray-600 hover:text-gray-900">Enable</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Discount Rules Tab Content (Hidden by default) -->
+                <div id="discounts-content" class="hidden space-y-6">
+                    <!-- BOGO Offers -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Buy One Get One (BOGO) Offers</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showBOGOModal()">
+                                <i class="fas fa-plus mr-1"></i>Create BOGO
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition duration-200">
+                                <div class="flex justify-between">
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">Active</span>
+                                    <span class="text-xs text-gray-500">Ends in 3 days</span>
+                                </div>
+                                <h3 class="font-medium mt-2">Buy 1 Shirt, Get 1 50% Off</h3>
+                                <p class="text-sm text-gray-600 mt-1">Applies to all men's shirts</p>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-sm font-medium">12,345 uses</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition duration-200">
+                                <div class="flex justify-between">
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Draft</span>
+                                    <span class="text-xs text-gray-500">Starts tomorrow</span>
+                                </div>
+                                <h3 class="font-medium mt-2">Buy 2 Jeans, Get 1 Free</h3>
+                                <p class="text-sm text-gray-600 mt-1">Selected styles only</p>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-sm font-medium">Not active yet</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center hover:border-indigo-300 transition duration-200 cursor-pointer" onclick="showBOGOModal()">
+                                <div class="text-center">
+                                    <i class="fas fa-plus text-gray-400 text-xl mb-1"></i>
+                                    <p class="text-sm text-gray-600">Create New BOGO</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Percentage Discounts -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Percentage Discounts</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showPercentageDiscountModal()">
+                                <i class="fas fa-plus mr-1"></i>Create Discount
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicable To</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uses</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Summer Sale</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20% off</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">All summer collection</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8,432</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VIP Exclusive</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15% off</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">VIP customers only</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1,245</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flash Sales Tab Content (Hidden by default) -->
+                <div id="flash-sales-content" class="hidden space-y-6">
+                    <!-- Active Flash Sales -->
+                    <div class="flash-sale-card rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="text-xl font-bold">Summer Flash Sale</h2>
+                                <p class="text-orange-100">Active for next <span id="flash-sale-countdown">23:59:59</span></p>
+                            </div>
+                            <span class="px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">ACTIVE</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                                <p class="text-sm">Discount</p>
+                                <p class="text-xl font-bold">40% OFF</p>
+                            </div>
+                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                                <p class="text-sm">Products</p>
+                                <p class="text-xl font-bold">87 Items</p>
+                            </div>
+                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                                <p class="text-sm">Orders</p>
+                                <p class="text-xl font-bold">1,245</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="bg-white text-orange-600 px-4 py-2 rounded-md hover:bg-opacity-90 transition duration-200">
+                                <i class="fas fa-chart-line mr-2"></i>View Performance
+                            </button>
+                            <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-md transition duration-200">
+                                <i class="fas fa-edit mr-2"></i>Edit Sale
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Scheduled Flash Sales -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Scheduled Flash Sales</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showFlashSaleModal()">
+                                <i class="fas fa-plus mr-1"></i>Schedule New
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition duration-200">
+                                <div class="flex justify-between">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Scheduled</span>
+                                    <span class="text-xs text-gray-500">Starts in 2 days</span>
+                                </div>
+                                <h3 class="font-medium mt-2">Back to School Sale</h3>
+                                <p class="text-sm text-gray-600 mt-1">30% off selected items</p>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-sm font-medium">Jul 28 - Aug 5</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition duration-200">
+                                <div class="flex justify-between">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Scheduled</span>
+                                    <span class="text-xs text-gray-500">Starts in 1 week</span>
+                                </div>
+                                <h3 class="font-medium mt-2">End of Season Clearance</h3>
+                                <p class="text-sm text-gray-600 mt-1">Up to 50% off</p>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-sm font-medium">Aug 10-15</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center hover:border-indigo-300 transition duration-200 cursor-pointer" onclick="showFlashSaleModal()">
+                                <div class="text-center">
+                                    <i class="fas fa-plus text-gray-400 text-xl mb-1"></i>
+                                    <p class="text-sm text-gray-600">Schedule New Sale</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coupons Tab Content (Hidden by default) -->
+                <div id="coupons-content" class="hidden space-y-6">
+                    <!-- Coupon Generator -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Generate New Coupon</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Coupon Type</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="py-2 px-3 border border-gray-300 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700 border-indigo-300">
+                                        Percentage
+                                    </button>
+                                    <button class="py-2 px-3 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50">
+                                        Fixed Amount
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Discount Value</label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                        %
+                                    </span>
+                                    <input type="number" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="10">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Coupon Code</label>
+                                <div class="flex">
+                                    <input type="text" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="SUMMER25">
+                                    <button class="ml-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                <input type="text" class="datepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select date">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200">
+                                <i class="fas fa-save mr-2"></i>Save Coupon
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Coupons -->
+                    <div class="bg-white rounded-lg shadow p-6 card-hover transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Active Coupons</h2>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" onclick="showCouponModal()">
+                                <i class="fas fa-plus mr-1"></i>Add Coupon
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uses</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expires</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <span class="discount-badge bg-indigo-100 text-indigo-800 px-2 py-1 rounded-md">SUMMER25</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25% off</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1,245/5,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Aug 15, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Deactivate</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <span class="discount-badge bg-indigo-100 text-indigo-800 px-2 py-1 rounded-md">FREESHIP</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Free shipping</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">892/∞</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Never</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Deactivate</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <span class="discount-badge bg-indigo-100 text-indigo-800 px-2 py-1 rounded-md">VIP15</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15% off</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">342/1,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 31, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Deactivate</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Add Discount Modal -->
+    <div id="add-discount-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Create New Discount</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Discount Type -->
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Discount Type</label>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <button class="discount-type-btn py-2 px-3 border border-gray-300 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700 border-indigo-300" data-type="percentage">
+                                            Percentage
+                                        </button>
+                                        <button class="discount-type-btn py-2 px-3 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50" data-type="fixed">
+                                            Fixed Amount
+                                        </button>
+                                        <button class="discount-type-btn py-2 px-3 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50" data-type="bogo">
+                                            BOGO
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Percentage/Fixed Fields -->
+                                <div id="standard-discount-fields">
+                                    <div>
+                                        <label for="discount-value" class="block text-sm font-medium text-gray-700 mb-1">Discount Value</label>
+                                        <div class="flex">
+                                            <span id="discount-symbol" class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                                %
+                                            </span>
+                                            <input type="number" id="discount-value" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="10">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="discount-name" class="block text-sm font-medium text-gray-700 mb-1">Discount Name</label>
+                                        <input type="text" id="discount-name" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Summer Sale">
+                                    </div>
+                                </div>
+                                
+                                <!-- BOGO Fields (Hidden by default) -->
+                                <div id="bogo-discount-fields" class="hidden md:col-span-2">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Buy Quantity</label>
+                                            <input type="number" id="bogo-buy-qty" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="1" value="1">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Get Quantity</label>
+                                            <input type="number" id="bogo-get-qty" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="1" value="1">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Discount Type</label>
+                                            <select id="bogo-type" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="free">Get Free</option>
+                                                <option value="percentage">Get X% Off</option>
+                                                <option value="fixed">Get $X Off</option>
+                                            </select>
+                                        </div>
+                                        <div id="bogo-value-container" class="hidden">
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Discount Value</label>
+                                            <input type="number" id="bogo-value" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="50">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Common Fields -->
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Applicable To</label>
+                                    <select id="discount-scope" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="all">All Products</option>
+                                        <option value="category">Specific Categories</option>
+                                        <option value="products">Specific Products</option>
+                                        <option value="collection">Collections</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Start Date</label>
+                                            <input type="text" class="datepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select date">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">End Date</label>
+                                            <input type="text" class="datepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select date">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Customer Eligibility</label>
+                                    <select class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="all">All Customers</option>
+                                        <option value="new">New Customers Only</option>
+                                        <option value="returning">Returning Customers Only</option>
+                                        <option value="vip">VIP Customers Only</option>
+                                        <option value="groups">Specific Customer Groups</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Usage Limits</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Total Usage Limit</label>
+                                            <input type="number" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Unlimited if empty">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Per Customer Limit</label>
+                                            <input type="number" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Unlimited if empty">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="saveDiscount()">
+                        Create Discount
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideAddDiscountModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flash Sale Modal -->
+    <div id="flash-sale-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Create Flash Sale</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Sale Details -->
+                                <div class="md:col-span-2">
+                                    <label for="sale-name" class="block text-sm font-medium text-gray-700 mb-1">Sale Name</label>
+                                    <input type="text" id="sale-name" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Summer Flash Sale">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Discount Type</label>
+                                    <select id="sale-discount-type" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="percentage">Percentage Off</option>
+                                        <option value="fixed">Fixed Amount Off</option>
+                                        <option value="bundle">Bundle Deal</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label for="sale-value" class="block text-sm font-medium text-gray-700 mb-1">Discount Value</label>
+                                    <div class="flex">
+                                        <span id="sale-discount-symbol" class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                            %
+                                        </span>
+                                        <input type="number" id="sale-value" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="20">
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Date & Time</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Start</label>
+                                            <input type="text" class="datetimepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select date & time">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">End</label>
+                                            <input type="text" class="datetimepicker block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Select date & time">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Products</label>
+                                    <select id="sale-products" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="all">All Products</option>
+                                        <option value="category">By Category</option>
+                                        <option value="collection">By Collection</option>
+                                        <option value="selected">Select Individual Products</option>
+                                    </select>
+                                    <div id="product-selection-container" class="hidden mt-2 border border-gray-200 rounded-md p-3 max-h-40 overflow-y-auto">
+                                        <!-- Products will be loaded here via JS -->
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Sale Banner Image</label>
+                                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                        <div class="space-y-1 text-center">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <div class="flex text-sm text-gray-600">
+                                                <label for="sale-banner-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                    <span>Upload banner</span>
+                                                    <input id="sale-banner-upload" name="sale-banner-upload" type="file" class="sr-only">
+                                                </label>
+                                                <p class="pl-1">or drag and drop</p>
+                                            </div>
+                                            <p class="text-xs text-gray-500">PNG, JPG up to 5MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label for="sale-description" class="block text-sm font-medium text-gray-700 mb-1">Description (Visible to Customers)</label>
+                                    <textarea id="sale-description" rows="2" class="block w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Limited time offer! Don't miss out..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="saveFlashSale()">
+                        Schedule Flash Sale
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="hideFlashSaleModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Notification -->
+    <div id="success-notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="success-message">Changes saved successfully!</span>
+        </div>
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- JavaScript -->
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Tab functionality
+        function openTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('[id$="-content"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('tab-active', 'text-indigo-600');
+                button.classList.add('text-gray-500');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            
+            // Add active class to the selected tab button
+            document.getElementById(`${tabName}-tab`).classList.remove('text-gray-500');
+            document.getElementById(`${tabName}-tab`).classList.add('tab-active', 'text-indigo-600');
+        }
+
+        // Modal control functions
+        function showAddDiscountModal(type = 'percentage') {
+            document.getElementById('add-discount-modal').classList.remove('hidden');
+            // Simulate click on the specified type button
+            const buttons = document.querySelectorAll('.discount-type-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.type === type) {
+                    btn.click();
+                }
+            });
+        }
+
+        function hideAddDiscountModal() {
+            document.getElementById('add-discount-modal').classList.add('hidden');
+            // Do not show notification here (only on save)
+        }
+
+        function showFlashSaleModal() {
+            document.getElementById('flash-sale-modal').classList.remove('hidden');
+        }
+
+        function hideFlashSaleModal() {
+            document.getElementById('flash-sale-modal').classList.add('hidden');
+            // Do not show notification here (only on save)
+        }
+
+        // Placeholder functions for undefined modals (to prevent JS errors)
+        function showAddPricingRuleModal() {
+            alert('TODO: Implement Add Pricing Rule Modal');
+        }
+
+        function showBOGOModal() {
+            showAddDiscountModal('bogo');
+        }
+
+        function showPercentageDiscountModal() {
+            showAddDiscountModal('percentage');
+        }
+
+        function showCouponModal() {
+            alert('TODO: Implement Add Coupon Modal');
+        }
+
+        // Save functions (would connect to backend in real app)
+        function saveDiscount() {
+            // TODO: Add actual save logic here
+            hideAddDiscountModal();
+            showNotification('Discount rule created successfully!', 'success');
+        }
+
+        function saveFlashSale() {
+            // TODO: Add actual save logic here
+            hideFlashSaleModal();
+            showNotification('Flash sale scheduled successfully!', 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('success-notification');
+            document.getElementById('success-message').textContent = message;
+            
+            if (type === 'success') {
+                notification.classList.remove('bg-red-500', 'bg-yellow-500');
+                notification.classList.add('bg-green-500');
+            }
+            
+            notification.classList.remove('hidden');
+            
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Discount Type Selection
+        document.querySelectorAll('.discount-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.discount-type-btn').forEach(b => {
+                    b.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+                    b.classList.add('hover:bg-gray-50');
+                });
+                
+                // Add active class to clicked button
+                this.classList.remove('hover:bg-gray-50');
+                this.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+                
+                const type = this.dataset.type;
+                
+                // Show/hide relevant fields
+                if (type === 'bogo') {
+                    document.getElementById('standard-discount-fields').classList.add('hidden');
+                    document.getElementById('bogo-discount-fields').classList.remove('hidden');
+                    document.getElementById('bogo-value-container').classList.add('hidden');
+                } else {
+                    document.getElementById('standard-discount-fields').classList.remove('hidden');
+                    document.getElementById('bogo-discount-fields').classList.add('hidden');
+                    
+                    // Update discount symbol
+                    const symbol = type === 'percentage' ? '%' : '$';
+                    document.getElementById('discount-symbol').textContent = symbol;
+                }
+            });
+        });
+        
+        // BOGO Type Selection
+        document.getElementById('bogo-type').addEventListener('change', function() {
+            const valueContainer = document.getElementById('bogo-value-container');
+            if (this.value === 'free') {
+                valueContainer.classList.add('hidden');
+            } else {
+                valueContainer.classList.remove('hidden');
+            }
+        });
+        
+        // Sale Products Selection
+        document.getElementById('sale-products').addEventListener('change', function() {
+            const container = document.getElementById('product-selection-container');
+            if (this.value === 'selected') {
+                container.classList.remove('hidden');
+                // In a real app, we'd load products here
+                container.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="product-1" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="product-1" class="ml-2 text-sm text-gray-700">Men's Casual Shirt</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="product-2" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="product-2" class="ml-2 text-sm text-gray-700">Women's Summer Dress</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="product-3" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="product-3" class="ml-2 text-sm text-gray-700">Kids T-Shirt</label>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.classList.add('hidden');
+            }
+        });
+        
+        // Sale Discount Type Selection
+        document.getElementById('sale-discount-type').addEventListener('change', function() {
+            const symbol = this.value === 'percentage' ? '%' : '$';
+            document.getElementById('sale-discount-symbol').textContent = symbol;
+        });
+        
+        // Initialize date/time pickers
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr(".datepicker", {
+                dateFormat: "Y-m-d",
+                minDate: "today"
+            });
+            
+            flatpickr(".datetimepicker", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today"
+            });
+            
+            // Initialize with Dynamic Pricing tab open
+            openTab('dynamic-pricing');
+            
+            // Flash sale countdown timer (demo)
+            let countdown = 24 * 60 * 60; // 24 hours in seconds
+            const countdownElement = document.getElementById('flash-sale-countdown');
+            
+            setInterval(() => {
+                countdown--;
+                const hours = Math.floor(countdown / 3600);
+                const minutes = Math.floor((countdown % 3600) / 60);
+                const seconds = countdown % 60;
+                
+                countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (countdown <= 0) {
+                    countdown = 24 * 60 * 60; // Reset for demo
+                }
+            }, 1000);
+
+            // User menu toggle
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                document.getElementById('user-menu').classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
