@@ -1,0 +1,406 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Kasat Mall - Shop Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .navbar {
+            background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cart-notification {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="navbar text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tshirt text-2xl text-indigo-200"></i>
+                <span class="text-2xl font-extrabold">RG Kasat Mall</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="{% url 'index' %}" class="hover:text-indigo-200">Home</a>
+                <a href="#" class="hover:text-indigo-200">Men</a>
+                <a href="#" class="hover:text-indigo-200">Women</a>
+                <a href="#" class="hover:text-indigo-200">Kids</a>
+                <a href="#" class="hover:text-indigo-200">New Arrivals</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-40 md:w-64">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                
+                <div class="relative">
+                    <button id="cart-button" class="text-white hover:text-indigo-200 focus:outline-none">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center cart-notification {% if not cart_count %}hidden{% endif %}">
+                            {{ cart_count }}
+                        </span>
+                    </button>
+                </div>
+                
+                {% if user.is_authenticated %}
+                <div class="hidden md:block">
+                    <a href="{% url 'account' %}" class="flex items-center focus:outline-none">
+                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
+                        <span class="ml-2">{{ user.username }}</span>
+                    </a>
+                </div>
+                {% else %}
+                <div class="hidden md:block">
+                    <a href="" class="text-white hover:text-indigo-200">Login</a>
+                    <span class="mx-1">/</span>
+                    <a href="" class="text-white hover:text-indigo-200">Register</a>
+                </div>
+                {% endif %}
+                
+                <button class="md:hidden text-white focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white shadow-lg hidden">
+        <div class="px-4 py-3 space-y-3">
+            <a href="{% url 'index' %}" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Home</a>
+            <a href="#" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Men</a>
+            <a href="#" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Women</a>
+            <a href="#" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Kids</a>
+            <a href="#" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">New Arrivals</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'account' %}" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">My Account</a>
+            <a href="{% url 'logout' %}" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Logout</a>
+            {% else %}
+            <a href="" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Login</a>
+            <a href="" class="block text-gray-800 hover:bg-gray-100 px-3 py-2 rounded">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Breadcrumbs -->
+        <div class="text-sm breadcrumbs mb-6">
+            <ul>
+                <li><a href="" class="text-indigo-600">Home</a></li> 
+                <li><a href="#" class="text-indigo-600">Men</a></li> 
+                <li class="text-gray-500">Casual Wear</li>
+            </ul>
+        </div>
+        
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Featured Products</h1>
+            
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-600">Sort by:</span>
+                <select class="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option>Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest Arrivals</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for product in products %}
+            <div class="product-card bg-white rounded-lg shadow overflow-hidden transition duration-300">
+                <!-- Product Image -->
+                <div class="relative">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-64 object-cover">
+                    {% else %}
+                        <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-500">No Image Available</span>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Badges -->
+                    <div class="absolute top-2 left-2">
+                        {% if product.stock > 0 and product.stock <= 10 %}
+                            <span class="bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Low Stock</span>
+                        {% elif product.stock == 0 %}
+                            <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Product Details -->
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-medium text-gray-800 mb-1">{{ product.name }}</h3>
+                            <p class="text-sm text-gray-600">{{ product.category.name }}</p>
+                        </div>
+                        <button class="text-gray-400 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3 flex items-center justify-between">
+                        <div>
+                            <span class="text-lg font-bold text-indigo-600">₹{{ product.price }}</span>
+                        </div>
+                        
+                        {% if product.stock > 0 %}
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700 transition duration-200">
+                                    Add to Cart
+                                </button>
+                            </form>
+                        {% else %}
+                            <button class="bg-gray-400 text-white px-3 py-1 rounded text-sm cursor-not-allowed" disabled>
+                                Out of Stock
+                            </button>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Ratings -->
+                    <div class="mt-2 flex items-center">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-xs text-gray-600 ml-1">(42)</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-10">
+                <i class="fas fa-tshirt text-4xl text-gray-400 mb-3"></i>
+                <h3 class="text-lg font-medium text-gray-700">No products found</h3>
+                <p class="text-gray-500 mt-1">Try adjusting your search or filter to find what you're looking for.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center">
+            {% if products.has_other_pages %}
+            <nav class="inline-flex rounded-md shadow">
+                {% if products.has_previous %}
+                    <a href="?page={{ products.previous_page_number }}" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                {% endif %}
+                
+                {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                        <span class="px-3 py-2 border-t border-b border-gray-300 bg-white text-indigo-600 font-medium">{{ i }}</span>
+                    {% else %}
+                        <a href="?page={{ i }}" class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if products.has_next %}
+                    <a href="?page={{ products.next_page_number }}" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                {% endif %}
+            </nav>
+            {% endif %}
+        </div>
+    </main>
+    
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-xl font-bold text-gray-800">Your Cart</h2>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="py-4 space-y-4">
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="flex items-center border-b pb-4">
+                        <div class="flex-shrink-0">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-16 h-16 object-cover rounded">
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h3 class="text-sm font-medium text-gray-800">{{ item.product.name }}</h3>
+                            <p class="text-sm text-gray-600">₹{{ item.product.price }}</p>
+                            <div class="flex items-center mt-1">
+                                <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-gray-500 hover:text-red-500 text-xs">
+                                        <i class="fas fa-trash"></i> Remove
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center">
+                                <form method="post" action="{% url 'update_cart' item.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                                    <button type="submit" class="bg-gray-200 px-2 py-1 rounded-l">-</button>
+                                </form>
+                                <span class="bg-white px-3 py-1 border-t border-b border-gray-300">{{ item.quantity }}</span>
+                                <form method="post" action="{% url 'update_cart' item.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                                    <button type="submit" class="bg-gray-200 px-2 py-1 rounded-r">+</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-10 text-gray-500">
+                        <i class="fas fa-shopping-cart text-4xl mb-3"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            {% if cart_items %}
+            <div class="border-t pt-4">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="font-medium">₹{{ cart_total }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Shipping</span>
+                    <span class="font-medium">Free</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Tax</span>
+                    <span class="font-medium">₹{{ cart_tax }}</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span class="text-indigo-600">₹{{ cart_grand_total }}</span>
+                </div>
+                
+                <a href="{% url 'checkout' %}" class="block w-full bg-indigo-600 text-white py-3 rounded-md mt-6 hover:bg-indigo-700 transition duration-200 text-center">
+                    Proceed to Checkout
+                </a>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">or <a href="{% url 'product_list' %}" class="text-indigo-600 hover:underline">Continue Shopping</a></p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RG Kasat Mall</h3>
+                    <p class="text-gray-400">Your one-stop shop for all clothing needs. Quality products at affordable prices.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Men</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Women</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kids</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Help</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Customer Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Track Order</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns & Exchanges</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i> 123 Mall Road, Mumbai</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-phone-alt mr-2"></i> +91 9876543210</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-envelope mr-2"></i> info@rgkasatmall.com</li>
+                    </ul>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2023 RG Kasat Mall. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        
+        // Cart functionality
+        // Toggle cart sidebar
+        document.getElementById('cart-button').addEventListener('click', function() {
+            document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+            document.getElementById('cart-sidebar').classList.add('translate-x-0');
+        });
+        
+        document.getElementById('close-cart').addEventListener('click', function() {
+            document.getElementById('cart-sidebar').classList.remove('translate-x-0');
+            document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        });
+        
+        // Close cart when clicking outside
+        document.addEventListener('click', function(event) {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const cartButton = document.getElementById('cart-button');
+            
+            if (!cartSidebar.contains(event.target) && !cartButton.contains(event.target)) {
+                cartSidebar.classList.remove('translate-x-0');
+                cartSidebar.classList.add('translate-x-full');
+            }
+        });
+    </script>
+</body>
+</html>

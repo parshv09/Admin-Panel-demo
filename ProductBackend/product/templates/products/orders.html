@@ -91,35 +91,36 @@
                 <span class="text-2xl font-extrabold">RG Kasat Mall</span>
             </div>
             <nav>
-                <div class="space-y-1">
-                    <a href="index.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
-                    </a>
-                    <a href="products.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-tshirt mr-3"></i>Products
-                    </a>
-                    <a href="pricing-discounts.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-tag mr-3"></i>Pricing & Discounts
-                    </a>
-                    <a href="orders.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
-                        <i class="fas fa-shopping-cart mr-3"></i>Orders
-                    </a>
-                    <a href="customers.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-users mr-3"></i>Customers
-                    </a>
-                    <a href="marketing.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-bullhorn mr-3"></i>Marketing
-                    </a>
-                    <a href="omnichannel.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-link mr-3"></i>Omnichannel
-                    </a>
-                    <a href="events.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-calendar mr-3"></i>Events
-                    </a>
-                    <a href="reports.html" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
-                        <i class="fas fa-chart-bar mr-3"></i>Reports
-                    </a>
-                </div>
+            <div class="space-y-1">
+                <a href="{% url 'index' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                </a>
+                <a href="{% url 'product-list' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-tshirt mr-3"></i>Products
+                </a>
+                <a href="{% url 'pricing-discounts' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-tag mr-3"></i>Pricing & Discounts
+                </a>
+                <a href="{% url 'orders' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 bg-white bg-opacity-10">
+                    <i class="fas fa-shopping-cart mr-3"></i>Orders
+                </a>
+                <a href="{% url 'customers' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-users mr-3"></i>Customers
+                </a>
+                <a href="{% url 'marketing' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-bullhorn mr-3"></i>Marketing
+                </a>
+                <a href="{% url 'omnichannel' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-link mr-3"></i>Omnichannel
+                </a>
+                <a href="{% url 'events' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-calendar mr-3"></i>Events
+                </a>
+                <a href="{% url 'reports' %}" class="sidebar-item flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-chart-bar mr-3"></i>Reports
+                </a>
+            </div>
+
             </nav>
         </div>
         
